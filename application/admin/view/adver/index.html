@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Dashboard</title>
+    <meta name="description" content="Dashboard"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {include file="common/css" /}
+</head>
+<!-- /Head -->
+<!-- Body -->
+<body>
+<!-- Loading Container -->
+{include file="common/loading" /}
+<!--  /Loading Container -->
+<!-- Navbar -->
+{include file="common/header" /}
+<!-- /Navbar -->
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+        <!-- Page Sidebar -->
+        {include file="common/sidebar" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="#">首页</a>
+                    </li>
+                    <li class="active">广告列表</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Header -->
+            <div class="page-header position-relative">
+                <div class="header-title">
+                    <h1>
+                        <a class="btn btn-primary shiny" href="/admin/adver/create.html"><i class="fa fa-plus"></i> 添加广告 </a>
+                    </h1>
+                </div>
+                <!--Header Buttons-->
+                <div class="header-buttons">
+                    <a class="sidebar-toggler" href="#">
+                        <i class="fa fa-arrows-h"></i>
+                    </a>
+                    <a class="refresh" id="refresh-toggler" href="">
+                        <i class="glyphicon glyphicon-refresh"></i>
+                    </a>
+                    <a class="fullscreen" id="fullscreen-toggler" href="#">
+                        <i class="glyphicon glyphicon-fullscreen"></i>
+                    </a>
+                </div>
+                <!--Header Buttons End-->
+            </div>
+            <!-- /Page Header -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <!--body-->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="well <!--with-header  with-footer-->">
+                            <!--<div class="header">-->
+                                <!--<form class="form-inline" role="form">-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="sr-only" for="title">标题</label>-->
+                                        <!--<input type="email" class="form-control" id="title" placeholder="请输入标题">-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="sr-only">属性</label>-->
+                                        <!--<select name="" id="">-->
+                                            <!--<option value="">请选择属性</option>-->
+                                            <!--<option value="h">头条</option>-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+                                    <!--<button type="submit" class="btn btn-sky">搜索</button>-->
+                                <!--</form>-->
+                            <!--</div>-->
+                            <table class="table table-hover table-striped table-bordered">
+                                <thead class="bordered-darkorange">
+                                <tr>
+                                    <th>序号</th>
+                                    <th>广告图片</th>
+                                    <th>名称</th>
+                                    <th>位置</th>
+                                    <th>是否显示</th>
+                                    <th>权重</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="adverres" id="vo" empty="$empty"}
+                                <tr>
+                                    <td>{{$i}}</td>
+                                    <td>
+                                        {notempty name="$vo.litpic"}
+                                        <a href="__UPLOADS__/{{$vo.litpic}}" target="_blank"><img src="__UPLOADS__/{{$vo.litpic}}" height="80" class="thumbnail" alt=""></a>
+                                        {else/}
+                                        无图
+                                        {/notempty}
+                                    </td>
+                                    <td><a href="{{$vo.link}}" title="{{$vo.link}}" target="_blank">{{$vo.title}}</a> [ ID：{{$vo.id}} ]</td>
+                                    <td>{{$vo.adverplace.place}} [ 位置ID：{{$vo.adver_place_id}} ]</td>
+                                    <td>
+                                        <label class="padding-top-5">
+                                            <input id="isdisplay" name="isdisplay" value="1" onclick="Ajax.Changestatus('isdisplay','{{$vo.isdisplay ? \'0\' : \'1\'}}','/admin/adver/{{$vo.id}}/change.html',false);" class="checkbox-slider slider-icon colored-blue" {eq name="$vo.isdisplay" value="1"}checked{/eq} type="checkbox">
+                                            <span class="text"></span>
+                                        </label>
+                                    </td>
+                                    <td>{{$vo.sort}}</td>
+                                    <td>
+                                        <a href="/admin/adver/{{$vo.id}}/edit.html" class="btn btn-blue btn-xs shiny">编辑</a>
+                                        <a href="#" onclick="Ajax.Del(this,'/admin/adver/{{$vo.id}}.html',false)" class="btn btn-danger btn-xs shiny">删除</a>
+                                    </td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+
+                            <!--<div class="footer">-->
+                                <!--<ul class="pagination">-->
+                                    <!--<li class="disabled"><a href="#">«</a></li>-->
+                                    <!--<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>-->
+                                    <!--<li><a href="#">2</a></li>-->
+                                    <!--<li><a href="#">3</a></li>-->
+                                    <!--<li><a href="#">4</a></li>-->
+                                    <!--<li><a href="#">5</a></li>-->
+                                    <!--<li><a href="#">»</a></li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+                <!--//body-->
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+
+{include file="common/js" /}
+</body>
+<!--  /Body -->
+</html>

@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Dashboard</title>
+    <meta name="description" content="Dashboard"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {include file="common/css" /}
+</head>
+<!-- /Head -->
+<!-- Body -->
+<body>
+<!-- Loading Container -->
+{include file="common/loading" /}
+<!--  /Loading Container -->
+<!-- Navbar -->
+{include file="common/header" /}
+<!-- /Navbar -->
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+        <!-- Page Sidebar -->
+        {include file="common/sidebar" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="#">首页</a>
+                    </li>
+                    <li class="active">规则管理</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Header -->
+            <div class="page-header position-relative">
+                <div class="header-title">
+                    <h1>
+                        文章管理
+                        <small>
+                            <i class="fa fa-angle-right"></i>
+                            添加规则
+                        </small>
+                    </h1>
+                </div>
+                <!--Header Buttons-->
+                <div class="header-buttons">
+                    <a class="sidebar-toggler" href="#">
+                        <i class="fa fa-arrows-h"></i>
+                    </a>
+                    <a class="refresh" id="refresh-toggler" href="">
+                        <i class="glyphicon glyphicon-refresh"></i>
+                    </a>
+                    <a class="fullscreen" id="fullscreen-toggler" href="#">
+                        <i class="glyphicon glyphicon-fullscreen"></i>
+                    </a>
+                </div>
+                <!--Header Buttons End-->
+            </div>
+            <!-- /Page Header -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <!--body-->
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-palegreen">
+                                <span class="widget-caption">添加规则</span>
+                            </div>
+                            <div class="widget-body">
+                                <div>
+                                    <form class="form-horizontal" action="/admin/rule.html" method="post" enctype="multipart/form-data" role="form">
+                                        <div class="form-group">
+                                            <label for="pid" class="col-sm-2 control-label no-padding-right">父级规则：</label>
+                                            <div class="col-sm-6">
+                                                <select name="pid" class="form-control" id="pid">
+                                                    <option value="0"> 顶级规则 </option>
+                                                    {volist name="ruleres" id="vo" empty="<option value=''> 暂无规则 </option>"}
+                                                    <option value="{{$vo.id}}"> {neq name="$vo.level" value="0"}{{$vo.level-1|str_repeat="⇢⇢⇢",###}}┗━━━ {/neq}{{$vo.title}} </option>
+                                                    {/volist}
+                                                </select>
+                                            </div>
+                                            <p class="help-block col-sm-4 red"></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="title" class="col-sm-2 control-label no-padding-right">规则标题：</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" name="title" id="title" placeholder="">
+                                            </div>
+                                            <p class="help-block col-sm-4 red">* 必填</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-2 control-label no-padding-right">规则名：</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" name="name" id="name" placeholder="">
+                                            </div>
+                                            <p class="help-block col-sm-4 red">* 必填</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="faicon" class="col-sm-2 control-label no-padding-right">图标：</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" name="faicon" id="faicon" placeholder="">
+                                            </div>
+                                            <p class="help-block col-sm-4 red">* 必填</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sort" class="col-sm-2 control-label no-padding-right">权重：</label>
+                                            <div class="col-sm-2">
+                                                <input type="number" value="50" class="form-control" name="sort" id="sort" placeholder="">
+                                            </div>
+                                            <p class="help-block col-sm-4 red"></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="status" class="col-sm-2 control-label no-padding-right">是否启用：</label>
+                                            <div class="col-sm-2">
+                                                <label class="padding-top-5">
+                                                    <input id="status" name="status" value="1" class="checkbox-slider slider-icon colored-blue" checked type="checkbox">
+                                                    <span class="text"></span>
+                                                </label>
+                                            </div>
+                                            <p class="help-block col-sm-4 red"></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="channel_id" class="col-sm-2 control-label no-padding-right">模型：</label>
+                                            <div class="col-sm-6">
+                                                <select name="channel_id" class="form-control" id="channel_id">
+                                                    <option value="0"> --请选择模型-- </option>
+                                                    {volist name="channel" id="vo"}
+                                                    <option value="{{$vo.id}}"> {{$vo.title}} [{{$vo.ctitle}}] </option>
+                                                    {/volist}
+                                                </select>
+                                            </div>
+                                            <p class="help-block col-sm-4 red"></p>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <button type="submit" class="btn btn-palegreen">保 存</button>
+                                                <a href="/admin/rule.html" class="btn btn-default">返 回</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--//body-->
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+
+{include file="common/js" /}
+
+<script>
+    var editor = new wangEditor("#weditor");
+    if (editor.customConfig){
+        editor.customConfig.uploadImgServer = '/posts/image/upload';
+        editor.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $("#content").val(html)
+        }
+        // console.log(editor);
+        editor.create();
+    }
+
+    $("#tag_ids").select2({
+        placeholder: "请选择标签",
+        allowClear: true
+    });
+
+    $(".form-group").find(".checkbox").find("input").click(function (e) {
+        if ($("#flag-j").is(":checked")){
+            $("#red_url").slideDown();
+        } else{
+            $("#red_url").slideUp();
+        }
+        if ($("#flag-v").is(":checked")){
+            $("#vid_url").slideDown();
+        } else{
+            $("#vid_url").slideUp();
+        }
+    });
+</script>
+</body>
+<!--  /Body -->
+</html>

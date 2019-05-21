@@ -1,0 +1,28 @@
+<div class="sidebar">
+    <div class="sb-search mt-4">
+        <form action="">
+            <div class="sbs-box d-flex justify-content-between">
+                <input type="search" id="key" class="input-search" name="key" placeholder="请输入要搜索的内容">
+                <button type="submit" class="btn btn-link text-dark btn-search"><span class="fa fa-search"></span></button>
+            </div>
+        </form>
+    </div>
+    <div class="sb-tag mt-4">
+        <div class="sbt-header">
+            <h5 class="h5">标签</h5>
+        </div>
+        <div class="sbt-body d-flex justify-content-start flex-wrap align-content-start">
+            {volist name="tagres" id="vo"}
+            <a href="/search/tag/{{$vo.tagname}}.html">{{$vo.tagname}}</a>
+            {/volist}
+        </div>
+    </div>
+    <div class="sb-smell mt-4">
+        <div class="sbs-header">
+            <h5 class="h5">每日一笑</h5>
+        </div>
+        <div class="sbs-body">
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;昨日搬家时从旧柜子里翻出来一面锦旗，老爸说这是当年生下我后为了响应计划生育就去做了结扎手术，后来村里送的！我打开一看，上面赫然写着四个大字：“永不超生”</p>
+        </div>
+    </div>
+</div>

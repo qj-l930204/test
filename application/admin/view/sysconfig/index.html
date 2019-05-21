@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Dashboard</title>
+    <meta name="description" content="Dashboard"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {include file="common/css" /}
+</head>
+<!-- /Head -->
+<!-- Body -->
+<body>
+<!-- Loading Container -->
+{include file="common/loading" /}
+<!--  /Loading Container -->
+<!-- Navbar -->
+{include file="common/header" /}
+<!-- /Navbar -->
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+        <!-- Page Sidebar -->
+        {include file="common/sidebar" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="#">首页</a>
+                    </li>
+                    <li class="active">网站设置</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Header -->
+            <div class="page-header position-relative">
+                <div class="header-title">
+                    <h1>
+                        <a class="btn btn-primary shiny" href="/admin/sysconfig/create.html"><i class="fa fa-plus"></i> 添加新变量 </a>
+                        <!--<a class="btn btn-danger shiny" href="javascript:void(0);" onclick=""><i class="fa fa-times"></i> 删除</a>-->
+                    </h1>
+                </div>
+                <!--Header Buttons-->
+                <div class="header-buttons">
+                    <a class="sidebar-toggler" href="#">
+                        <i class="fa fa-arrows-h"></i>
+                    </a>
+                    <a class="refresh" id="refresh-toggler" href="">
+                        <i class="glyphicon glyphicon-refresh"></i>
+                    </a>
+                    <a class="fullscreen" id="fullscreen-toggler" href="#">
+                        <i class="glyphicon glyphicon-fullscreen"></i>
+                    </a>
+                </div>
+                <!--Header Buttons End-->
+            </div>
+            <!-- /Page Header -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <!--body-->
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-palegreen text-align-left">
+                                <div class="btn-group">
+                                    {volist name="syscfg_group" id="vo" empty="$empty"}
+                                    <a class="btn btn-{eq name='$gid' value='$vo.id'}primary{else/}default{/eq}" href="/admin/sysconfig.html?gid={{$vo.id}}">{{$vo.title}}</a>
+                                    {/volist}
+                                </div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="widget-main ">
+                                    {notempty name="$sysconfigres"}
+                                    <form class="form-horizontal" action="/admin/sysconfig/{{$gid}}.html" method="post" enctype="multipart/form-data" role="form">
+                                        <input type="hidden" name="_method" value="PUT">
+                                        {volist name="sysconfigres" id="vo" empty="$empty"}
+                                        <div class="form-group">
+                                            <label for="{{$vo.cname}}" class="col-sm-2 control-label no-padding-right">{{$vo.title}}：</label>
+                                            <div class="col-sm-6">
+                                                {if condition="$vo.type eq 'string'"}
+                                                <input type="text" class="form-control" value="{{$vo.value}}" name="{{$vo.id}}___{{$vo.cname}}" id="{{$vo.cname}}" placeholder="">
+                                                {elseif condition="$vo.type eq 'bstring'"}
+                                                <textarea class="form-control" name="{{$vo.id}}___{{$vo.cname}}" id="{{$vo.cname}}" cols="30" rows="10">{{$vo.value}}</textarea>
+                                                {elseif condition="$vo.type eq 'bool'"}
+                                                <div class="radio">
+                                                    <label>
+                                                        <input name="{{$vo.id}}___{{$vo.cname}}" value="1" type="radio" {eq name="$vo.value" value="1"}checked{/eq}>
+                                                        <span class="text">是 </span>
+                                                    </label>
+                                                    <label>
+                                                        <input name="{{$vo.id}}___{{$vo.cname}}" value="0" type="radio" {eq name="$vo.value" value="0"}checked{/eq}>
+                                                        <span class="text">否 </span>
+                                                    </label>
+                                                </div>
+                                                {elseif condition="$vo.type eq 'image'"}
+                                                <input class="form-control" type="file" name="{{$vo.id}}___{{$vo.cname}}">
+                                                <div>
+                                                    <img src="__UPLOADS__/{{$vo.value}}" height="120" alt="">
+                                                </div>
+                                                {elseif class="form-control" condition="$vo.type eq 'file'"}
+                                                <input type="file" class="form-control" name="{{$vo.id}}___{{$vo.cname}}">
+                                                {/if}
+                                            </div>
+                                            <p class="help-block col-sm-4 red"></p>
+                                        </div>
+                                        {/volist}
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <button type="submit" class="btn btn-palegreen">保 存</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    {/notempty}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--//body-->
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+
+{include file="common/js" /}
+</body>
+<!--  /Body -->
+</html>

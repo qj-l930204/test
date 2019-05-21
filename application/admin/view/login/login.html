@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="__ADMIN__/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__ADMIN__/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__ADMIN__/assets/css/login.css">
+</head>
+<body>
+<div class="login-body">
+    <div class="login-box">
+        <form action="" id="login-form" method="post">
+            <div class="box-img">
+                <p class="eye-img"><img src="__ADMIN__/assets/img/eye-open.jpg" id="eye" class="thumbnail rounded-circle" width="80" height="80" alt=""></p>
+                <p class="eye-title">博客窝后台管理系统</p>
+            </div>
+            <div class="box-input">
+                <label class="text-white font-weight-bold" for="username">用户名：</label>
+                <input class="form-control" autocomplete="off" type="text" style="height: 50px; font-size: 25px;" name="username" id="username">
+            </div>
+            <div class="box-input">
+                <label class="text-white font-weight-bold" for="password">密码：</label>
+                <input class="form-control" type="password" style="height: 50px; font-size: 25px;" name="password" id="password">
+            </div>
+            <div class="box-input">
+                <label class="text-white font-weight-bold" for="code">验证码：</label>
+                <div class="code-box">
+                    <input class="form-control mr-2" autocomplete="off" type="text" style="height: 50px; font-size: 25px;" name="code" id="code">
+                    <img src="{{:captcha_src()}}" onclick="this.src='{{:captcha_src()}}?id='+Math.random()" class="thumbnail" style="cursor: pointer" height="50" alt="">
+                </div>
+            </div>
+            <div class="box-input mt-4">
+                <button type="button" id="btn-submit" class="btn btn-success form-control" style="height: 50px;">登 录</button>
+            </div>
+            <div class="center" style="height: 30px; line-height: 30px; color: red; margin-top: 20px;">
+                <p id="login_msg" class="form-control font-weight-bold" style="display: none;"></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="__ADMIN__/assets/js/jquery-2.0.3.min.js"></script>
+<script src="__ADMIN__/assets/js/bootstrap.min.js"></script>
+<script src="__ADMIN__/assets/js/jquery.form.js"></script>
+<script>
+    $(document).ready(function (e) {
+        $("#password").focus(function () {
+            $("#eye").attr('src','__ADMIN__/assets/img/eye-close.jpg');
+        });
+        $("#password").blur(function () {
+            $("#eye").attr('src','__ADMIN__/assets/img/eye-open.jpg');
+        });
+        
+        $("#btn-submit").click(function (e) {
+            var _timer;
+            $("#login-form").ajaxSubmit({
+                url: '/admin/check.html',
+                type: 'post',
+                success: function (data) {
+                    var json = eval(data);
+                    console.log(json);
+                    if (json.code == '0'){
+                        $("#login_msg").html('<b style="color: red">'+ json.msg +'</b>');
+                        $("#login_msg").fadeIn(500).delay(2000).fadeOut(500);
+                    }else{
+                        $("#login_msg").html('<b style="color: green">'+ json.msg +'</b>');
+                        $("#login_msg").fadeIn(500);
+                        setTimeout('window.location.href="/admin"',1000);
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

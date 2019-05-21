@@ -1,0 +1,113 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="navbar-container">
+            <!-- Navbar Barnd -->
+            <div class="navbar-header pull-left">
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <img src="__ADMIN__/assets/img/logo.png" alt=""/>
+                    </small>
+                </a>
+            </div>
+            <!-- /Navbar Barnd -->
+
+            <!-- Sidebar Collapse -->
+            <div class="sidebar-collapse" id="sidebar-collapse">
+                <i class="collapse-icon fa fa-bars"></i>
+            </div>
+            <!-- /Sidebar Collapse -->
+            <!-- Account Area and Settings --->
+            <div class="navbar-header pull-right">
+                <div class="navbar-account">
+                    <ul class="account-area">
+                        <li>
+                            <a href="/" target="_blank" class="tooltip-primary" data-toggle="tooltip" data-placement="bottom" data-original-title="网站首页">
+                                <i class="icon fa fa-home"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/changepwd.html" target="_blank" class="tooltip-primary" data-toggle="tooltip" data-placement="bottom" data-original-title="修改密码">
+                                <i class="icon fa fa-key"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/logout.html" target="_blank" class="tooltip-primary" data-toggle="tooltip" data-placement="bottom" data-original-title="登出系统">
+                                <i class="icon fa fa-sign-out"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a style="font-weight: bold; color: white;font-size: 16px; padding-top: 5px;margin-left: 10px;" class="tooltip-primary" data-toggle="tooltip" data-placement="bottom" data-original-title="水印开关">
+                                <span class="d-block margin-top-5">水印：</span>
+                                <label class="padding-top-10">
+                                    <input id="isopen" name="isopen" value="1" onclick="Ajax.Changestatus('isopen','{{$watermark.isopen ? \'0\' : \'1\'}}','/admin/watermark/1/change.html',false);" class="checkbox-slider slider-icon colored-blue" {eq name="$watermark.isopen" value="1"}checked{/eq} type="checkbox">
+                                    <span class="text"></span>
+                                </label>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                                <div class="avatar" title="View your public profile">
+                                    <img src="{{$Think.session.admininfo.headimg}}">
+                                </div>
+                                <section>
+                                    <h2><span class="profile"><span>欢迎登录：{{$Think.session.admininfo.nickname}}</span></span></h2>
+                                </section>
+                            </a>
+                            <!--Login Area Dropdown-->
+                            <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+                                <!--<li class="username"><a>刘丽洁</a></li>-->
+                                <li>
+                                    <div class="avatar-area">{{$Think.session.admininfo.username}}</div>
+                                </li>
+                                <!--Avatar Area-->
+                                <li>
+                                    <div class="avatar-area">
+                                        <img src="{{$Think.session.admininfo.headimg}}" class="avatar">
+                                        <span class="caption">{{$Think.session.admininfo.nickname}}</span>
+                                    </div>
+                                </li>
+                                <!--Theme Selector Area-->
+                                <li class="theme-area">
+                                    <ul class="colorpicker" id="skin-changer">
+                                        <li><a class="colorpick-btn" href="#" style="background-color:#5DB2FF;"
+                                               rel="__ADMIN__/assets/css/skins/blue.min.css"></a></li>
+                                        <li><a class="colorpick-btn" href="#" style="background-color:#2dc3e8;"
+                                               rel="__ADMIN__/assets/css/skins/azure.min.css"></a></li>
+                                        <li><a class="colorpick-btn" href="#" style="background-color:#03B3B2;"
+                                               rel="__ADMIN__/assets/css/skins/teal.min.css"></a></li>
+                                        <li><a class="colorpick-btn" href="#" style="background-color:#53a93f;"
+                                               rel="__ADMIN__/assets/css/skins/green.min.css"></a></li>
+                                        <li><a class="colorpick-btn" href="#" style="background-color:#FF8F32;"
+                                               rel="__ADMIN__/assets/css/skins/orange.min.css"></a></li>
+                                        <li><a class="colorpick-btn" href="#" style="background-color:#cc324b;"
+                                               rel="__ADMIN__/assets/css/skins/pink.min.css"></a></li>
+                                        <li><a class="colorpick-btn" href="#" style="background-color:#AC193D;"
+                                               rel="__ADMIN__/assets/css/skins/darkred.min.css"></a></li>
+                                        <li><a class="colorpick-btn" href="#" style="background-color:#8C0095;"
+                                               rel="__ADMIN__/assets/css/skins/purple.min.css"></a></li>
+                                        <li><a class="colorpick-btn" href="#" style="background-color:#0072C6;"
+                                               rel="__ADMIN__/assets/css/skins/darkblue.min.css"></a></li>
+                                        <li><a class="colorpick-btn" href="#" style="background-color:#585858;"
+                                               rel="__ADMIN__/assets/css/skins/gray.min.css"></a></li>
+                                        <li><a class="colorpick-btn" href="#" style="background-color:#474544;"
+                                               rel="__ADMIN__/assets/css/skins/black.min.css"></a></li>
+                                        <li><a class="colorpick-btn" href="#" style="background-color:#001940;"
+                                               rel="__ADMIN__/assets/css/skins/deepblue.min.css"></a></li>
+                                    </ul>
+                                </li>
+                                <!--/Theme Selector Area-->
+                                <li class="dropdown-footer">
+                                    <a href="/admin/logout.html">退出</a>
+                                </li>
+                            </ul>
+                            <!--/Login Area Dropdown-->
+                        </li>
+                        <!-- /Account Area -->
+                        <!-- Settings -->
+                    </ul>
+                </div>
+            </div>
+            <!-- /Account Area and Settings -->
+        </div>
+    </div>
+</div>

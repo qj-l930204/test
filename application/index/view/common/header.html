@@ -1,0 +1,36 @@
+<header class="bg-white">
+    <div class="col-lg-12 bg-red topbar">
+        <div class="container d-flex bg-red justify-content-between align-items-center topbar-left">
+            <div class="topbar-title d-flex justify-content-start">
+                <p class="text-white font-weight-bold">欢迎来到“窝”里来</p>
+                <div class="login-box">
+                    {empty name="$Think.session.userinfo.id"}
+                    <a href="/login.html">登陆</a>
+                    <a href="/register.html">注册</a>
+                    {else/}
+                    <a>你好</a>
+                    <a href="/user.html">{{$Think.session.userinfo.nickname}}</a>
+                    <a>，</a>
+                    <a href="/logout.html">退出</a>
+                    {/empty}
+                </div>
+            </div>
+            <div class="topbar-menu">
+                <a class="text-white" href="">加入收藏</a>
+            </div>
+        </div>
+    </div>
+    <nav class="container d-flex justify-content-between align-items-end">
+        <div class="logo-box mt-3">
+            <a href=""><img src="__HOME__/images/logo.png" width="238" height="79" alt=""></a>
+        </div>
+        <div class="site-nav">
+            <ul class="d-flex justify-content-end align-items-center nav-list">
+                <li><a href="/">首页</a></li>
+                {volist name="menuinfo" id="vo"}
+                <li><a href="/{{$vo.ctitle}}/{{$vo.id}}.html">{{$vo.title}}</a></li>
+                {/volist}
+            </ul>
+        </div>
+    </nav>
+</header>

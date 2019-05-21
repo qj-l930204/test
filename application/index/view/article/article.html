@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="__HOME__/css/bootstrap.min.css">
+  <link rel="stylesheet" href="__HOME__/css/font-awesome.min.css">
+  <link rel="stylesheet" href="__HOME__/css/blognest.css">
+  <link rel="stylesheet" href="__HOME__/css/list.css">
+  <link rel="stylesheet" href="__HOME__/css/theme/a11y-dark.css">
+  <link rel="stylesheet" href="__HOME__/css/icons.css">
+</head>
+<body>
+{include file="common/header" /}
+<div class="container mt-4 bg-white">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="/list/{{$column.par.id}}.html">{{$column.par.title}}</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        {volist name="$column.chi" id="vo"}
+        <li class="nav-item">
+          <a class="nav-link {eq name='$view' value='$vo.id'}active{/eq}" href="/list/{{$vo.id}}.html">{{$vo.title}}</a>
+        </li>
+        {/volist}
+      </ul>
+    </div>
+  </nav>
+</div>
+<div class="container">
+  <div class="row d-flex justify-content-between">
+    <div class="index-cont mt-4 bg-white">
+      <h3 class="h3 text-center mt-4">{{$articles.title}}</h3>
+      <div class="art-info d-flex justify-content-center mt-4 text-muted">
+        <span class="d-block mx-2">作者：{{$articles.authors.nickname}}</span>
+        <span class="d-block mx-2">来源：{{$articles.source}}</span>
+        <span class="d-block mx-2">更新时间：{{$articles.create_time}}</span>
+        <span class="d-block mx-2">浏览次数：{{$articles.click}}</span>
+      </div>
+      <div class="art-body">
+        {{$articles.content}}
+        <p><br></p>
+        {notempty name="$articles.tag_ids"}
+        <p>标签：{foreach name="$articles.tag_ids|explode=',',###" item="v"}<a href="/search/tag/{{$v}}.html"><span class="badge badge-secondary">{{$v}}</span></a>&nbsp;{/foreach}</p>
+        {else/}
+        <p>标签：没有标签</p>
+        {/notempty}
+        <p><br></p>
+        <p class="article_zan_btn">
+          <div>
+            {empty name="$Think.session.user.id"}
+            <span class="fa fa-heart-o"></span>
+            {else/}
+            {in name="$Think.session.user.id" value="1,2,3"}
+            <span class="fa fa-heart"></span>
+            {else/}
+            <span class="fa fa-heart-o"></span>
+            {/in}
+            {/empty}
+          </div>
+          <span class="h3" id="zans_number">{{$articles.zan_count}}</span>
+        </p>
+        <p><br></p>
+        <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a></div>
+        <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+      </div>
+      <!-- 评论 -->
+      <div class="art-com-box bg-light mt-4 pt-5">
+        <h4 class="h4 text-center">评论</h4>
+        {empty name="$Think.session.userinfo.id"}
+        <p class="h5 text-center mt-5">请<a onclick="$.cookie('url','/article/{{$view}}/{{$articles.id}}.html')" href="/login.html"> 登陆 </a>后评论</p>
+        {else/}
+        <div class="art-comment d-flex justify-content-between">
+          <div class="artc-headimg col-1 rounded-circle">
+            <img class="rounded-circle" src="__HOME__/images/default-5.png" width="35" height="35" alt="">
+          </div>
+          <form action="" method="post" id="commentform" class="col-11">
+            <input type="hidden" name="user_id" value="{{$Think.session.userinfo.id}}">
+            <input type="hidden" name="article_id" value="{{$articles.id}}">
+            <input type="hidden" name="pid" value="0">
+            <div class="form-group">
+              <!--contenteditable="plaintext-only"-->
+              <div contenteditable="true" spellcheck="false" class="form-control commentbox empty" name="content" placeholder="输入评论内容..." id="content"></div>
+            </div>
+            <div class="form-group d-flex justify-content-between">
+              <div class="d-flex justify-content-start align-items-center">
+                <input type="text" class="form-control col-4" name="code" placeholder="输入验证码" autocomplete="off">
+                <img src="{{:captcha_src()}}" onclick="this.src='{{:captcha_src()}}?id='+Math.random()"
+                     class="rounded col-5" height="36" alt="">
+              </div>
+              <div class="art-c-smile position-relative">
+                <button type="button" class="btn btn-warning" onclick="$('#emoji-face').toggle()"><span
+                    class="fa fa-smile-o"></span> 表情
+                </button>
+                <input type="button" id="comment-submit" class="btn btn-danger" value="提交">
+                <div id="emoji-face" class="emoji-face position-absolute">
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                         aria-controls="home" aria-selected="true">emoji</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                         aria-controls="profile" aria-selected="false">miluo</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                         aria-controls="contact" aria-selected="false">weather</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_0.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_1.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_2.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_3.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_4.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_5.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_6.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_7.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_8.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_9.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_10.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_11.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_12.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_13.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_14.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_15.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_16.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_17.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_18.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_19.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_20.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_21.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_22.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_23.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_24.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_25.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_26.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_27.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_28.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/emoji/emoji-_29.svg" height="50" width="50" alt=""></span>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                      <span><img src="__HOME__/images/smail/miluo/00.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/01.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/02.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/03.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/04.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/05.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/06.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/07.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/08.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/09.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/10.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/11.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/12.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/13.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/14.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/15.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/16.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/17.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/18.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/19.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/20.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/21.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/22.gif" height="75" width="75" alt=""></span>
+                      <span><img src="__HOME__/images/smail/miluo/23.gif" height="75" width="75" alt=""></span>
+                    </div>
+                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                      <span><img src="__HOME__/images/smail/weather/icon-test_0.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_1.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_2.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_3.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_4.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_5.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_6.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_7.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_8.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_9.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_10.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_11.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_12.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_13.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_14.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_15.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_16.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_17.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_18.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_19.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_20.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_21.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_22.svg" height="50" width="50" alt=""></span>
+                      <span><img src="__HOME__/images/smail/weather/icon-test_23.svg" height="50" width="50" alt=""></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        {/empty}
+        <!-- 评论list -->
+        <div class="art-com-list col-12 mt-4">
+          {volist name="commentres" id="vo" empty="暂无评论"}
+          <div class="media bg-white px-1 py-2 mt-1 border border-1 border-gray">
+            <div class="media-body">
+              <div class="pr-3 d-flex justify-content-start align-items-center py-1 border-bottom border-1 border-gray" href="#">
+                <img class="rounded-circle" src="__HOME__/images/default-5.png" width="40" height="40" alt="">
+                <h5 class="ml-2 font-weight-bold">{{$vo.users.nickname}}<br><small class="text-info">{{$vo.create_time}}</small></h5>
+              </div>
+              <div class="ml-5 mt-2">{{$vo.content}}</div>
+              <div class="mb-btn d-flex justify-content-end mt-1">
+                <button type="button" class="btn btn-sm mr-2"><span class="fa fa-heart-o"></span>
+                  <span class="badge badge-light">9</span></button>
+                <button type="button" class="btn btn-sm mr-2"><span class="fa fa-edit"></span>
+                  <span class="badge badge-light">9</span></button>
+              </div>
+              <!--回复-->
+              <div class="media bg-light px-1 py-2 mt-1 ml-5 border border-1 border-gray">
+                <div class="media-body">
+                  <div class="pr-3 d-flex justify-content-start align-items-center py-1 border-bottom border-1 border-gray" href="#">
+                    <img class="rounded-circle" src="__HOME__/images/default-5.png" width="40" height="40" alt="">
+                    <h5 class="ml-2 font-weight-bold">{{$vo.users.nickname}}<br><small class="text-info">{{$vo.create_time}}</small></h5>
+                  </div>
+                  <div class="ml-5 mt-2">测试</div>
+                </div>
+              </div>
+              <div class="media bg-light px-1 py-2 mt-1 ml-5 border border-1 border-gray">
+                <div class="media-body">
+                  <div class="pr-3 d-flex justify-content-start align-items-center py-1 border-bottom border-1 border-gray" href="#">
+                    <img class="rounded-circle" src="__HOME__/images/default-5.png" width="40" height="40" alt="">
+                    <h5 class="ml-2 font-weight-bold">{{$vo.users.nickname}}<br><small class="text-info">{{$vo.create_time}}</small></h5>
+                  </div>
+                  <div class="ml-5 mt-2">测试</div>
+                </div>
+              </div>
+              <!--//回复-->
+            </div>
+          </div>
+          {/volist}
+        </div>
+        <!-- //评论list -->
+      </div>
+      <!-- //评论 -->
+    </div>
+    {include file="common/sidebar" /}
+  </div>
+</div>
+{include file="common/footer" /}
+
+<script src="__HOME__/js/jquery-3.3.1.min.js"></script>
+<script src="__HOME__/js/popper.min.js"></script>
+<script src="__HOME__/js/bootstrap.min.js"></script>
+<script src="__HOME__/js/jquery.form.js"></script>
+<script src="__HOME__/js/highlight.pack.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+  $(document).ready(function () {
+    $("#content").keyup(function (e) {
+      if ($("#content").html() != '') {
+        $("#content").find("*").removeAttr("style");
+        $("#content").removeClass("empty");
+      } else {
+        $("#content").addClass("empty");
+      }
+    })
+    $("#content").keydown(function (e) {
+      $("#content").find("*").removeAttr("style");
+      if ($("#content").html() != '') {
+        $("#content").removeClass("empty");
+      } else {
+        $("#content").addClass("empty");
+      }
+    })
+  })
+
+  $(document).ready(function (e) {
+    $("#emoji-face").find("span").click(function (e) {
+      $("#content").removeClass("empty");
+      var val = $("#content").html() + $(this).html();
+      var _len = $("#content").html().length;
+      $("#total-font").html(1000 - _len);
+      $("#content").html(val);
+      $("#emoji-face").hide();
+      val = '';
+    })
+  })
+
+  $(document).ready(function (e) {
+    $("#content").keyup(function (e) {
+      var _len = $("#content").html().length;
+      $("#total-font").html(1000 - _len);
+    });
+  })
+
+  $(document).ready(function (e) {
+    $("#comment-submit").click(function (e) {
+      $("#commentform").ajaxSubmit({
+        url: '/comment/save.html',
+        type: 'post',
+        data: {
+          content: $("#content").html()
+        },
+        success: function (data) {
+          console.log(data);
+        }
+      });
+    });
+  })
+</script>
+
+</body>
+</html>

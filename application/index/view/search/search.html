@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="__HOME__/css/bootstrap.min.css">
+  <link rel="stylesheet" href="__HOME__/css/font-awesome.min.css">
+  <link rel="stylesheet" href="__HOME__/css/blognest.css">
+  <link rel="stylesheet" href="__HOME__/css/list.css">
+</head>
+<body>
+{include file="common/header" /}
+<div class="container mt-4 bg-white">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="#">筛选标签：</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link active" href="javascript:void(0);">{{$tagname}}</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<div class="container">
+  <div class="row d-flex justify-content-between">
+    <div class="index-cont">
+      {volist name="articleres" id="vo"}
+      <a class="cont-item mt-4 d-flex justify-content-start p-3" href="/article/{{$vo.column_id}}/{{$vo.id}}.html" target="_blank">
+        <img src="__UPLOADS__/{{$vo.litpic}}" height="110" width="160" class="rounded" alt="...">
+        <div class="ci-cont ml-3">
+          <p class="ainfo">{{$vo.authors.nickname}} {{$vo.create_time}} · {{$vo.columns.title}}</p>
+          <h3 class="h3 atitle">{{$vo.title}}</h3>
+          <div class="mt-4 text-dark">
+            <span class="mr-3">
+              <b>标签：</b> {foreach name="$vo.tag_ids|explode=',',###" item="v"}<span class="badge badge-secondary">{{$v}}</span>&nbsp;{/foreach}
+            </span>
+            <span class="mr-3">
+              <span class="fa fa-heart-o"></span> <span class="badge badge-secondary">{{$vo.zan_count}}</span>
+            </span>
+            <span class="mr-3">
+              <span class="fa fa-edit"></span> <span class="badge badge-secondary">{{$vo.comment_count}}</span>
+            </span>
+          </div>
+        </div>
+      </a>
+      {/volist}
+    </div>
+    {include file="common/sidebar" /}
+  </div>
+</div>
+{include file="common/footer" /}
+
+<script src="__HOME__/js/jquery-3.3.1.slim.min.js"></script>
+<script src="__HOME__/js/popper.min.js"></script>
+<script src="__HOME__/js/bootstrap.min.js"></script>
+</body>
+</html>

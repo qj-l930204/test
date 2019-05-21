@@ -1,0 +1,83 @@
+<div class="page-sidebar" id="sidebar">
+    <!-- Page Sidebar Header-->
+    <div class="sidebar-header-wrapper">
+        <input type="text" class="searchinput"/>
+        <i class="searchicon fa fa-search"></i>
+        <!--<div class="searchhelper"></div>-->
+    </div>
+    <!-- /Page Sidebar Header -->
+    <!-- Sidebar Menu -->
+    <ul class="nav sidebar-menu">
+        <!--Dashboard-->
+        <li class="{eq name='C_NAME' value='Index'}active{/eq}">
+            <a href="/admin/index.html">
+                <i class="menu-icon glyphicon glyphicon-fire"></i>
+                <span class="menu-text"> 控制面板 </span>
+            </a>
+        </li>
+        <li class="{in name='C_NAME' value='Column,Article,Spec,Single'}open{/in}">
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-folder-close"></i>
+                <span class="menu-text"> 内容管理 </span>
+                <i class="menu-expand"></i>
+            </a>
+            <ul class="submenu">
+                <li class="{eq name='C_NAME' value='Column'}active{/eq}"><a href="/admin/column.html"><span class="menu-text"> 栏目列表 </span></a></li>
+                <li class="{eq name='C_NAME' value='Article'}active{/eq}"><a href="/admin/article.html"><span class="menu-text"> 文章列表 </span></a></li>
+                <li class="{eq name='C_NAME' value='Spec'}active{/eq}"><a href="#"><span class="menu-text"> 专题列表 </span></a></li>
+                <li class="{eq name='C_NAME' value='Single'}active{/eq}"><a href="/admin/single.html"><span class="menu-text"> 单页列表 </span></a></li>
+            </ul>
+        </li>
+        <li class="{in name='C_NAME' value='Admin,Group,Rule'}open{/in}">
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-lock"></i>
+                <span class="menu-text"> 权限管理 </span>
+                <i class="menu-expand"></i>
+            </a>
+            <ul class="submenu">
+                <li class="{eq name='C_NAME' value='Admin'}active{/eq}"><a href="/admin/admin.html"><span class="menu-text"> 管理员列表 </span></a></li>
+                <li class="{eq name='C_NAME' value='Group'}active{/eq}"><a href="/admin/group.html"><span class="menu-text"> 管理员组列表 </span></a></li>
+                <li class="{eq name='C_NAME' value='Rule'}active{/eq}"><a href="/admin/rule.html"><span class="menu-text"> 权限规则列表 </span></a></li>
+            </ul>
+        </li>
+        <li class="{in name='C_NAME' value='User,Comment,Message,UserArticle'}open{/in}">
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-user"></i>
+                <span class="menu-text"> 会员管理 </span>
+                <i class="menu-expand"></i>
+            </a>
+            <ul class="submenu">
+                <li class="{eq name='C_NAME' value='User'}active{/eq}"><a href="/admin/user.html"><span class="menu-text"> 会员列表 </span></a></li>
+                <li class="{eq name='C_NAME' value='Comment'}active{/eq}"><a href="/admin/comment.html"><span class="menu-text"> 评论列表 </span></a></li>
+                <li class="{eq name='C_NAME' value='Message'}active{/eq}"><a href="/admin/message.html"><span class="menu-text"> 留言列表 </span></a></li>
+                <li class="{eq name='C_NAME' value='UserArticle'}active{/eq}"><a href="/admin/user_article.html"><span class="menu-text"> 文章列表 </span></a></li>
+            </ul>
+        </li>
+        <li class="{in name='C_NAME' value='Sysconfig,Link,Watermark,Tag,Channel'}open{/in}">
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-cog"></i>
+                <span class="menu-text"> 系统管理 </span>
+                <i class="menu-expand"></i>
+            </a>
+            <ul class="submenu">
+                <li class="{eq name='C_NAME' value='Sysconfig'}active{/eq}"><a href="/admin/sysconfig.html"><span class="menu-text"> 网站设置 </span></a></li>
+                <li class="{eq name='C_NAME' value='Link'}active{/eq}"><a href="/admin/link.html"><span class="menu-text"> 友情链接 </span></a></li>
+                <li class="{eq name='C_NAME' value='Watermark'}active{/eq}"><a href="/admin/watermark.html"><span class="menu-text"> 水印设置 </span></a></li>
+                <li class="{eq name='C_NAME' value='Tag'}active{/eq}"><a href="/admin/tag.html"><span class="menu-text"> 标签列表 </span></a></li>
+                <li class="{eq name='C_NAME' value='Channel'}active{/eq}"><a href="/admin/channel.html"><span class="menu-text"> 模型管理 </span></a></li>
+            </ul>
+        </li>
+        <li class="{in name='C_NAME' value='Adver,Adverplace'}open{/in}">
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon glyphicon glyphicon-leaf"></i>
+                <span class="menu-text"> 广告管理 </span>
+                <i class="menu-expand"></i>
+            </a>
+            <ul class="submenu">
+                <li class="{eq name='C_NAME' value='Adver'}active{/eq}"><a href="/admin/adver.html"><span class="menu-text"> 广告列表 </span></a></li>
+                <li class="{eq name='C_NAME' value='Adverplace'}active{/eq}"><a href="/admin/adverplace.html"><span class="menu-text"> 广告位置列表 </span></a></li>
+            </ul>
+        </li>
+    </ul>
+    <!-- /Sidebar Menu -->
+</div>

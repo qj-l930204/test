@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Dashboard</title>
+    <meta name="description" content="Dashboard"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+{include file="common/css" /}
+</head>
+<!-- /Head -->
+<!-- Body -->
+<body>
+<!-- Loading Container -->
+{include file="common/loading" /}
+<!--  /Loading Container -->
+<!-- Navbar -->
+{include file="common/header" /}
+<!-- /Navbar -->
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+        <!-- Page Sidebar -->
+        {include file="common/sidebar" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="#">首页</a>
+                    </li>
+                    <li class="active">控制面板</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Header -->
+            <div class="page-header position-relative">
+                <div class="header-title">
+                    <h1>
+                        Dashboard
+                    </h1>
+                </div>
+                <!--Header Buttons-->
+                <div class="header-buttons">
+                    <a class="sidebar-toggler" href="#">
+                        <i class="fa fa-arrows-h"></i>
+                    </a>
+                    <a class="refresh" id="refresh-toggler" href="">
+                        <i class="glyphicon glyphicon-refresh"></i>
+                    </a>
+                    <a class="fullscreen" id="fullscreen-toggler" href="#">
+                        <i class="glyphicon glyphicon-fullscreen"></i>
+                    </a>
+                </div>
+                <!--Header Buttons End-->
+            </div>
+            <!-- /Page Header -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <!--body-->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="well">
+                            <p><h3>欢迎登录，{{$Think.session.admininfo.nickname}}！您上次登录时间为：{{$Think.session.admininfo.last_login_time|date="Y-m-d H:i:s",###}} 登录地址为：{{$ipinfo.data.country}}-{{$ipinfo.data.region}}-{{$ipinfo.data.city}} [ {{$ipinfo.data.isp}} ]</h3></p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="well">
+                            <div class="knob-container">
+                                <div id="year" style="display:inline;width:60px;height:60px;"></div>
+                                <div id="month" style="display:inline;width:60px;height:60px;"></div>
+                                <div id="day" style="display:inline;width:60px;height:60px;"></div>
+                                <div id="hour" style="display:inline;width:60px;height:60px;"></div>
+                                <div id="min" style="display:inline;width:60px;height:60px;"></div>
+                                <div id="sec" style="display:inline;width:60px;height:60px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="well with-header">
+                            <div class="header">服务器配置信息</div>
+                            <div class="knob-container">
+                                <table class="table table-hover">
+                                    <thead class="bordered-darkorange">
+                                    <tr>
+                                        <th style="text-align: center">参数</th>
+                                        <th style="text-align: center">值</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {volist name="servicesinfo" id="vo"}
+                                    <tr>
+                                        <td>{{$key}}</td>
+                                        <td>{{$vo}}</td>
+                                    </tr>
+                                    {/volist}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--//body-->
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+
+{include file="common/js" /}
+<script>
+    //---Jquery Knob--
+    function _dateGer() {
+        var dt = new Date();
+        var y = dt.getFullYear();
+        var m = dt.getMonth()+1;
+        var d = dt.getDate();
+        var h= dt.getHours();
+        var i = dt.getMinutes();
+        var s = dt.getSeconds();
+
+        $("#year").html('<input class="knob" data-angleoffset="0" data-linecap="round" data-fgcolor="#600000" value="'+y+'" data-thickness=".25"><i style="font-size: 30px;">年 </i>');
+        $("#year>.knob").knob({
+            max:5000,
+            min:-5000,
+            width: 60,
+            height: 60,
+        });
+        $("#month").html('<input class="knob" data-angleoffset="0" data-linecap="round" data-fgcolor="#006000" value="'+m+'" data-thickness=".25"><i style="font-size: 30px;">月 </i>');
+        $("#month>.knob").knob({
+            max:12,
+            min:0,
+            width: 60,
+            height: 60,
+        });
+        $("#day").html('<input class="knob" data-angleoffset="0" data-linecap="round" data-fgcolor="#6000FF" value="'+d+'" data-thickness=".25"><i style="font-size: 30px;">日 </i>');
+        $("#day>.knob").knob({
+            max:31,
+            min:0,
+            width: 60,
+            height: 60,
+        });
+        $("#hour").html('<input class="knob" data-angleoffset="0" data-linecap="round" data-fgcolor="#FF0060" value="'+h+'" data-thickness=".25"><i style="font-size: 30px;">时 </i>');
+        $("#hour>.knob").knob({
+            max:23,
+            min:0,
+            width: 60,
+            height: 60,
+        });
+        $("#min").html('<input class="knob" data-angleoffset="0" data-linecap="round" data-fgcolor="#FF60FF" value="'+i+'" data-thickness=".25"><i style="font-size: 30px;">分 </i>');
+        $("#min>.knob").knob({
+            max:59,
+            min:0,
+            width: 60,
+            height: 60,
+        });
+        $("#sec").html('<input class="knob" data-angleoffset="0" data-linecap="round" data-fgcolor="#0060FF" value="'+s+'" data-thickness=".25"><i style="font-size: 30px;">秒 </i>');
+        $("#sec>.knob").knob({
+            max:59,
+            min:0,
+            width: 60,
+            height: 60,
+        });
+
+        setTimeout("_dateGer()",1000);
+    }
+    _dateGer();
+
+</script>
+</body>
+<!--  /Body -->
+</html>

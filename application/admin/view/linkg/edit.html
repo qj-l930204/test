@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Dashboard</title>
+    <meta name="description" content="Dashboard"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {include file="common/css" /}
+</head>
+<!-- /Head -->
+<!-- Body -->
+<body>
+<!-- Loading Container -->
+{include file="common/loading" /}
+<!--  /Loading Container -->
+<!-- Navbar -->
+{include file="common/header" /}
+<!-- /Navbar -->
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+        <!-- Page Sidebar -->
+        {include file="common/sidebar" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="#">首页</a>
+                    </li>
+                    <li class="active">修改友情链接组信息</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Header -->
+            <div class="page-header position-relative">
+                <div class="header-title">
+                    <h1>
+                        友情链接组列表
+                        <small>
+                            <i class="fa fa-angle-right"></i>
+                            修改友情链接组信息
+                        </small>
+                    </h1>
+                </div>
+                <!--Header Buttons-->
+                <div class="header-buttons">
+                    <a class="sidebar-toggler" href="#">
+                        <i class="fa fa-arrows-h"></i>
+                    </a>
+                    <a class="refresh" id="refresh-toggler" href="">
+                        <i class="glyphicon glyphicon-refresh"></i>
+                    </a>
+                    <a class="fullscreen" id="fullscreen-toggler" href="#">
+                        <i class="glyphicon glyphicon-fullscreen"></i>
+                    </a>
+                </div>
+                <!--Header Buttons End-->
+            </div>
+            <!-- /Page Header -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <!--body-->
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-palegreen">
+                                <span class="widget-caption">修改友情链接组信息</span>
+                            </div>
+                            <div class="widget-body">
+                                <div>
+                                    <form class="form-horizontal" action="/admin/linkg/{{$linkgs.id}}.html" method="post" enctype="multipart/form-data" role="form">
+                                        <input type="hidden" name="_method" value="PUT">
+                                        <input type="hidden" name="id" value="{{$linkgs.id}}">
+                                        <div class="form-group">
+                                            <label for="title" class="col-sm-2 control-label no-padding-right">添加友情链接组名称：</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" value="{{$linkgs.title}}" name="title" id="title" placeholder="">
+                                            </div>
+                                            <p class="help-block col-sm-4 red">* 必填</p>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <button type="submit" class="btn btn-palegreen">保 存</button>
+                                                <a href="/admin/linkg.html" class="btn btn-default">返 回</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--//body-->
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+
+{include file="common/js" /}
+
+<script>
+    var editor = new wangEditor("#weditor");
+    if (editor.customConfig){
+        editor.customConfig.uploadImgServer = '/posts/image/upload';
+        editor.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $("#content").val(html)
+        }
+        // console.log(editor);
+        editor.create();
+    }
+
+    $("#tag_ids").select2({
+        placeholder: "请选择标签",
+        allowClear: true
+    });
+
+    $(".form-group").find(".checkbox").find("input").click(function (e) {
+        if ($("#flag-j").is(":checked")){
+            $("#red_url").slideDown();
+        } else{
+            $("#red_url").slideUp();
+        }
+        if ($("#flag-v").is(":checked")){
+            $("#vid_url").slideDown();
+        } else{
+            $("#vid_url").slideUp();
+        }
+    });
+</script>
+</body>
+<!--  /Body -->
+</html>

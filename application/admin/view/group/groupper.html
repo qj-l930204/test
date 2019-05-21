@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Dashboard</title>
+    <meta name="description" content="Dashboard"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {include file="common/css" /}
+</head>
+<!-- /Head -->
+<!-- Body -->
+<body>
+<!-- Loading Container -->
+{include file="common/loading" /}
+<!--  /Loading Container -->
+<!-- Navbar -->
+{include file="common/header" /}
+<!-- /Navbar -->
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+        <!-- Page Sidebar -->
+        {include file="common/sidebar" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="#">首页</a>
+                    </li>
+                    <li class="active">管理员组管理</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Header -->
+            <div class="page-header position-relative">
+                <div class="header-title">
+                    <h1>
+                        管理员组管理
+                        <small>
+                            <i class="fa fa-angle-right"></i>
+                            添加管理员组
+                        </small>
+                    </h1>
+                </div>
+                <!--Header Buttons-->
+                <div class="header-buttons">
+                    <a class="sidebar-toggler" href="#">
+                        <i class="fa fa-arrows-h"></i>
+                    </a>
+                    <a class="refresh" id="refresh-toggler" href="">
+                        <i class="glyphicon glyphicon-refresh"></i>
+                    </a>
+                    <a class="fullscreen" id="fullscreen-toggler" href="#">
+                        <i class="glyphicon glyphicon-fullscreen"></i>
+                    </a>
+                </div>
+                <!--Header Buttons End-->
+            </div>
+            <!-- /Page Header -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <!--body-->
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                        <div class="widget">
+                            <div class="widget-header bordered-bottom bordered-palegreen">
+                                <span class="widget-caption">添加管理员组</span>
+                            </div>
+                            <div class="widget-body">
+                                <div>
+                                    <form class="form-horizontal" action="/admin/groupper/1.html" method="post" enctype="multipart/form-data" role="form">
+                                        <input type="hidden" name="id" value="{{$groups.id}}">
+                                        <div class="form-group">
+                                            <label for="title" class="col-sm-2 control-label no-padding-right">管理员组名称：</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" readonly class="form-control" value="{{$groups.title}}" id="title" placeholder="">
+                                            </div>
+                                            <p class="help-block col-sm-4 red">* 必填</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">权限分配：</label>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-md-12">
+                                                        <div class="well">
+                                                            <table class="table table-hover">
+                                                                <tbody>
+                                                                {volist name="rules" id="vo"}
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="checkbox">
+                                                                            <label>
+                                                                                <input name="column_ids[]" value="{{$vo.id}}" dataid="id-{{$vo.id}}" type="checkbox" class="inverted checkbox-parent" {in name="$vo.id" value="$groups.rules" }checked{/in}>
+                                                                                <span class="text"> {{$vo.title}}</span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                {volist name="$vo.children" id="vvo"}
+                                                                <tr>
+                                                                    <td class="padding-left-30">
+                                                                        <div class="checkbox col-sm-4">
+                                                                            <label>
+                                                                                <input name="column_ids[]" value="{{$vvo.id}}" dataid="id-{{$vo.id}}-{{$vvo.id}}" type="checkbox" class="inverted checkbox-parent checkbox-child" {in name="$vvo.id" value="$groups.rules" }checked{/in}>
+                                                                                <span class="text"> {{$vvo.title}}</span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="padding-left-50">
+                                                                        {volist name="$vvo.children" id="vvvo"}
+                                                                        <div class="checkbox col-sm-4">
+                                                                            <label>
+                                                                                <input name="column_ids[]" value="{{$vvvo.id}}" dataid="id-{{$vo.id}}-{{$vvo.id}}-{{$vvo.id}}" type="checkbox" class="inverted checkbox-parent checkbox-child" {in name="$vvvo.id" value="$groups.rules" }checked{/in}>
+                                                                                <span class="text"> {{$vvvo.title}}</span>
+                                                                            </label>
+                                                                        </div>
+                                                                        {/volist}
+                                                                    </td>
+                                                                </tr>
+                                                                {/volist}
+                                                                {/volist}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="help-block col-sm-4 red"></p>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <button type="submit" class="btn btn-palegreen">保 存</button>
+                                                <a href="/admin/group.html" class="btn btn-default">返 回</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--//body-->
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+
+{include file="common/js" /}
+
+<script>
+    var editor = new wangEditor("#weditor");
+    if (editor.customConfig){
+        editor.customConfig.uploadImgServer = '/posts/image/upload';
+        editor.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $("#content").val(html)
+        }
+        // console.log(editor);
+        editor.create();
+    }
+
+    $("#tag_ids").select2({
+        placeholder: "请选择标签",
+        allowClear: true
+    });
+
+    $(".form-group").find(".checkbox").find("input").click(function (e) {
+        if ($("#flag-j").is(":checked")){
+            $("#red_url").slideDown();
+        } else{
+            $("#red_url").slideUp();
+        }
+        if ($("#flag-v").is(":checked")){
+            $("#vid_url").slideDown();
+        } else{
+            $("#vid_url").slideUp();
+        }
+    });
+</script>
+<script type="text/javascript">
+    /* 权限配置 */
+    $(function () {
+        //动态选择框，上下级选中状态变化
+        $('input.checkbox-parent').on('change', function () {
+            var dataid = $(this).attr("dataid");
+            console.log(dataid);
+            $('input[dataid^=' + dataid + '-]').prop('checked', $(this).is(':checked'));
+        });
+        $('input.checkbox-child').on('change', function () {
+            var dataid = $(this).attr("dataid");
+            dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+            var parent = $('input[dataid=' + dataid + ']');
+            if ($(this).is(':checked')) {
+                parent.prop('checked', true);
+                //循环到顶级
+                while (dataid.lastIndexOf("-") != 2) {
+                    dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+                    parent = $('input[dataid=' + dataid + ']');
+                    parent.prop('checked', true);
+                }
+            } else {
+                //父级
+                if ($('input[dataid^=' + dataid + '-]:checked').length == 0) {
+                    parent.prop('checked', false);
+                    //循环到顶级
+                    while (dataid.lastIndexOf("-") != 2) {
+                        dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+                        parent = $('input[dataid=' + dataid + ']');
+                        if ($('input[dataid^=' + dataid + '-]:checked').length == 0) {
+                            parent.prop('checked', false);
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+</body>
+<!--  /Body -->
+</html>

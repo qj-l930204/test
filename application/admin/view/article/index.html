@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>Dashboard</title>
+    <meta name="description" content="Dashboard"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {include file="common/css" /}
+</head>
+<!-- /Head -->
+<!-- Body -->
+<body>
+<!-- Loading Container -->
+{include file="common/loading" /}
+<!--  /Loading Container -->
+<!-- Navbar -->
+{include file="common/header" /}
+<!-- /Navbar -->
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+        <!-- Page Sidebar -->
+        {include file="common/sidebar" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="#">首页</a>
+                    </li>
+                    <li class="active">文章列表</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Header -->
+            <div class="page-header position-relative">
+                <div class="header-title">
+                    <h1>
+                        <a class="btn btn-primary shiny" href="/admin/article/create.html"><i class="fa fa-plus"></i> 添加</a>
+                        <a class="btn btn-danger shiny" href="javascript:void(0);" onclick=""><i class="fa fa-times"></i> 删除</a>
+                    </h1>
+                </div>
+                <!--Header Buttons-->
+                <div class="header-buttons">
+                    <a class="sidebar-toggler" href="#">
+                        <i class="fa fa-arrows-h"></i>
+                    </a>
+                    <a class="refresh" id="refresh-toggler" href="">
+                        <i class="glyphicon glyphicon-refresh"></i>
+                    </a>
+                    <a class="fullscreen" id="fullscreen-toggler" href="#">
+                        <i class="glyphicon glyphicon-fullscreen"></i>
+                    </a>
+                </div>
+                <!--Header Buttons End-->
+            </div>
+            <!-- /Page Header -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <!--body-->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="well with-header  with-footer">
+                            <div class="header">
+                                <form class="form-inline" role="form">
+                                    <div class="form-group">
+                                        <label class="sr-only" for="keys">标题</label>
+                                        <input type="text" class="form-control" name="keys" id="keys" placeholder="请输入标题">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="sr-only">属性</label>
+                                        <select name="flag_ids" id="flag_ids">
+                                            <option value="">请选择属性</option>
+                                            {volist name="flagres" id="vo"}
+                                            <option value="{{$vo.flag}}">{{$vo.title}}</option>
+                                            {/volist}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="sr-only">属性</label>
+                                        <select name="column_id" id="column_id">
+                                            <option value=""> --请选择栏目-- </option>
+                                            {volist name="columnres" id="vo" empty="<option value=''> 暂无栏目 </option>"}
+                                            <option value="{{$vo.id}}" {if condition="$vo.channel_id neq '1'"}disabled{/if}> {neq name="$vo.level" value="0"}{{$vo.level-1|str_repeat="⇢⇢⇢",###}}┗━━━ {/neq}{{$vo.title}} </option>
+                                            {/volist}
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-sky">搜索</button>
+                                </form>
+                            </div>
+                            <table class="table table-hover table-striped table-bordered">
+                                <thead class="bordered-darkorange">
+                                <tr>
+                                    <th>序号</th>
+                                    <th>标题</th>
+                                    <th>栏目</th>
+                                    <th>作者</th>
+                                    <th>附件权限</th>
+                                    <th>添加时间</th>
+                                    <th>更新时间</th>
+                                    <th>是否允许评论</th>
+                                    <th>权重</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="articleres" id="vo" empty="$empty"}
+                                <tr>
+                                    <td>{{$i}}</td>
+                                    <td><a style="color: {{$vo.titlecolor}};" href="/article/{{$vo.column_id}}/{{$vo.id}}.html" target="_blank">{{$vo.title}}</a>
+                                        {notempty name="$vo.flag_ids"}
+                                        [ {volist name="flagres" id="dvo"}
+                                        {in name="$dvo.flag" value="$vo.flag_ids"}
+                                        <span class="primary">{{$dvo.title}}</span>&nbsp;
+                                        {/in}
+                                        {/volist}]
+                                        {/notempty}
+                                    </td>
+                                    <td>{{$vo.columns.title}}</td>
+                                    <td>{{$vo.authors.nickname}}</td>
+                                    <td>{{$vo.accessory ? $vo.accessoryjur.title : '无附件'}}</td>
+                                    <td>{{$vo.create_time}}</td>
+                                    <td>{{$vo.update_time}}</td>
+                                    <td>{{$vo.commentable ? '允许' : '禁止'}}</td>
+                                    <td>{{$vo.sort}}</td>
+                                    <td>
+                                        <a href="/admin/article/{{$vo.id}}/edit.html" class="btn btn-blue btn-xs shiny">编辑</a>
+                                        <a href="#" onclick="Ajax.Del(this,'/admin/article/{{$vo.id}}.html',false)" class="btn btn-danger btn-xs shiny">删除</a>
+                                    </td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+
+                            <div class="footer">
+                                {{$articleres->render()}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--//body-->
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+
+{include file="common/js" /}
+</body>
+<!--  /Body -->
+</html>
